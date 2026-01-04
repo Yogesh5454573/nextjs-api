@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{ UserController };
+use App\Http\Controllers\Admin\{ UserController, HomeController };
+
+Route::get('/', [HomeController::class, 'home'])->name('admin.dashboard');
+
 
 // ========= Start Manage Admins  =========
 Route::controller(UserController::class)

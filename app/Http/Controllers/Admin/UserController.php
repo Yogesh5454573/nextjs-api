@@ -18,18 +18,17 @@ class UserController extends Controller
         // dd('Fetching admin list...'); // Debugging line, can be removed later
         try {
             if ($request->ajax()) {
-
                 $userList = User::query();
 
                 return DataTables::of($userList)
                     ->addIndexColumn()
                     ->addColumn('action', function ($userList) {
 
-                        $edit = '<a href="/admin/editAdmin/' . $userList->token . '"><button type="button" class="btn btn-sm btn-success">Edit</button></a>';
-                        $delete = '<form method="POST" action="/admin/deleteAdmin/' . $userList->token . '" accept-charset="UTF-8" class="delete" style="display:inline">
+                        $edit = '<a href="/editUser/' . $userList->token . '"><button type="button" class="btn btn-sm btn-success">Edit</button></a>';
+                        $delete = '<form method="POST" action="/deleteUser/' . $userList->token . '" accept-charset="UTF-8" class="delete" style="display:inline">
                     ' . csrf_field() . '
                     <input name="_method" value="DELETE" type="hidden">
-                    <button type="button" class="btn btn-danger btn-sm admin_delete_alert">Delete</button></form>';
+                    <button type="button" class="btn btn-danger btn-sm user_delete_alert">Delete</button></form>';
 
                         return $edit . ' ' . $delete;
                     })
@@ -37,15 +36,12 @@ class UserController extends Controller
                     ->make(true);
             }
         } catch (\Exception $e) {
-            info("Error in adminList(): " . $e->getMessage());
+            info("Error in userList(): " . $e->getMessage());
             Session::flash("error", "There was some error, please try again later.");
         }
         return view('admin.manage_users.userList');
     }
-    public function userList()
-    {
-        return view("admin.manage_users.userList");
-    }
+    
     public function addUser()
     {
         return view("admin.manage_users.addUser");
